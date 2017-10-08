@@ -5,7 +5,7 @@
 * 	Oktober 1, 2013 05:12:10 AM 
 *	Iwan Susyanto, S.Si - admin@auracms.org      - 081 327 575 145
 */
-
+echo "s";
 	isset($_REQUEST['img']) or die('NO IMAGE');	
 	include 'includes/resize.php';
 

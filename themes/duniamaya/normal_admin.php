@@ -8,9 +8,9 @@
 	//$tengah .= '<div id="dragbox">';
 	$tengah .= '
 	<div class="box" style="min-height:260px;">';
-	$s = mysql_query ("SELECT * FROM `mod_admin` ORDER BY `ordering` ASC");
+	$s = mysqli_query ($link, "SELECT * FROM `mod_admin` ORDER BY `ordering` ASC");
 	$i =  0;
-	while($data = mysql_fetch_array($s)){
+	while($data = mysqli_fetch_array($s)){
 		$warna = empty ($warna) ? 'background-color:#f4f4f8;' : '';
 		if (($i % 6) == 0){
 			$margin 	= 'margin:0 3px 3px 0';

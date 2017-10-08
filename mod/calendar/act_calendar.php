@@ -31,8 +31,8 @@ if (isset ($_GET['sel_date'])){
 	  
 	
 	   
-	$cekdate = mysql_query ("SELECT * FROM `tbl_kalender` WHERE `waktu_mulai` = '$varwaktucalender' OR `waktu_akhir` = '$varwaktucalender2' ORDER BY `waktu_mulai`");
-	while ($getdate = mysql_fetch_assoc($cekdate)){
+	$cekdate = mysqli_query ($link, "SELECT * FROM `tbl_kalender` WHERE `waktu_mulai` = '$varwaktucalender' OR `waktu_akhir` = '$varwaktucalender2' ORDER BY `waktu_mulai`");
+	while ($getdate = mysqli_fetch_assoc($cekdate)){
 		//print_r($getdate);
 		$WKTMULAI = $getdate['waktu_mulai'];
 		$WKTAKHIR = $getdate['waktu_akhir'];

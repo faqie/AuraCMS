@@ -18,7 +18,7 @@
 	</div>';
 	
 	$tengah = '';
-	$qc		= $db->sql_query(" SELECT * FROM `mod_content` WHERE `type`='news' AND `published`='1' AND `headline`='0' ORDER BY `id` DESC LIMIT 0,5");
+	$qc		= $db->sql_query("SELECT * FROM `mod_content` WHERE `type`='news' AND `published`='1' AND `headline`='0' ORDER BY `id` DESC LIMIT 0,5");
 	$tengah .= '<h1 class="bgdepan">Berita Terbaru</h1><div class="box">';
 	while($data = $db->sql_fetchrow($qc)){
 
@@ -35,3 +35,4 @@
 	$tengah .= '</div>';
 	
 echo $tengah;
+?>

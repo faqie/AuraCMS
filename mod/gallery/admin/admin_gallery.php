@@ -12,7 +12,7 @@
 	if (isset ($_GET['offset'])) $offset = int_filter ($_GET['offset']); else $offset = 0;
 	
 	function escape ($value){
-		$b = mysql_real_escape_string($value);
+		$b = mysqli_real_escape_string($value);
 		return $b;
 	}
 	
@@ -172,7 +172,7 @@ js;
 								unlink(tmp . $finame);
 						
 							}else{
-								$tengah .= '<div class="error">'.mysql_error().'</div>';
+								$tengah .= '<div class="error">'.mysqli_error().'</div>';
 								unlink(tmp . $finame);
 								unlink(thumb . $finame);
 								unlink(normal . $finame);
@@ -267,7 +267,7 @@ js;
 								exit;
 								unset($album);
 							}else{
-								$tengah .= '<div class="error rt" style="margin-bottom:15px;padding-left:50px;">'.mysql_error().'</div>';
+								$tengah .= '<div class="error rt" style="margin-bottom:15px;padding-left:50px;">'.mysqli_error().'</div>';
 							}
 						}
 						
@@ -453,7 +453,7 @@ js;
 						header("location: $referer");
 						exit;
 					}else{
-						$tengah .= '<div class="error">'.mysql_error().'</div>';	
+						$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 						unlink(tmp . $finame);							
 					}
 				}else{
@@ -463,7 +463,7 @@ js;
 						header("location: $referer");
 						exit;
 					}else{
-						$tengah .= '<div class="error">'.mysql_error().'</div>';								
+						$tengah .= '<div class="error">'.mysqli_error().'</div>';								
 					}
 				}
 			}
@@ -560,7 +560,7 @@ js;
 					header("location: $referer");
 					exit;
 				}else{
-					$tengah .= '<div class="error">'.mysql_error().'</div>';
+					$tengah .= '<div class="error">'.mysqli_error().'</div>';
 				}
 			}
 				
@@ -623,13 +623,13 @@ js;
 			unlink(thumb.$images);
 			unlink(normal.$images);
 		}
-		$delete = mysql_query("DELETE FROM `mod_gallery` WHERE `id` = '$id'");
+		$delete = mysqli_query($link,"DELETE FROM `mod_gallery` WHERE `id` = '$id'");
 		if ($delete) {
 			$referer = $_GET['referer'];
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	
@@ -641,14 +641,14 @@ js;
 			unlink(thumb.$images);
 			unlink(normal.$images);
 		}
-		$delete  = mysql_query("DELETE FROM `mod_gallery_album` WHERE `id` = '$id'");
-		$delete .= mysql_query("DELETE FROM `mod_gallery` WHERE `album_id`='$id'");
+		$delete  = mysqli_query($link, "DELETE FROM `mod_gallery_album` WHERE `id` = '$id'");
+		$delete .= mysqli_query($link, "DELETE FROM `mod_gallery` WHERE `album_id`='$id'");
 		if ($delete) {
 			$referer = $_GET['referer'];
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 

@@ -17,7 +17,7 @@ js;
 	if (isset ($_GET['offset'])) $offset = int_filter ($_GET['offset']); else $offset = 0;
 	
 	function escape ($value){
-		$b = mysql_real_escape_string($value);
+		$b = mysqli_real_escape_string($value);
 		return $b;
 	}
 
@@ -417,7 +417,7 @@ js;
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	
@@ -429,7 +429,7 @@ js;
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 

@@ -137,12 +137,12 @@ js;
 	
 	if($_GET['action'] == 'delete'){
 		$id 		= int_filter($_GET['id']);
-		$delete = mysql_query("DELETE FROM `mod_guestbook` WHERE `id` = '$id'");
+		$delete = mysqli_query($link, "DELETE FROM `mod_guestbook` WHERE `id` = '$id'");
 		if ($delete) {
 			header("location: admin.php?mod=guestbook");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	

@@ -11,14 +11,13 @@ if (!defined('INDEX')) {
     exit;
 }
 
-
 	if (isset ($_GET['pg'])) $pg = int_filter ($_GET['pg']); else $pg = 0;
 	if (isset ($_GET['stg'])) $stg = int_filter ($_GET['stg']); else $stg = 0;
 	if (isset ($_GET['offset'])) $offset = int_filter ($_GET['offset']); else $offset = 0;
 	
-	include 'mod/content/_config-rating.php';
-	include 'mod/content/_drawrating.php';
-	
+	include './mod/content/_config-rating.php';
+	include './mod/content/_drawrating.php';
+
 	$translateKal_2 = array('januari' => '01',
 						'februari' => '02',
 						'maret' => '03',
@@ -170,6 +169,7 @@ if (!defined('INDEX')) {
 		$tengah .= '
 		<h2>'.$a['title'].'</h2>
 		<div class="border breadcrumb"><a href="index.html" id="home">Home</a>   &nbsp;&raquo;&nbsp;   '.ucwords(strtolower($a['type'])).'    &nbsp;&raquo;&nbsp;   '.$a['title'].'<br />'.rating_bar($a['id'],'10').'</div>';
+
 		$tengah .= <<<rate
 		<script language="javascript" type="text/javascript">
 	
@@ -191,7 +191,8 @@ if (!defined('INDEX')) {
 				var theVote = parameterList['j'];
 				var theuserIP = parameterList['t'];
 				var theunits = parameterList['c'];
-				sndReq(theVote,theratingID,theuserIP,theunits);return false;		
+				sndReq(theVote,theuserIPatingID,theuserIP,theunits);return false;	
+				console.log(theVote + theratingID + theuserIP +theunits)	
 				}
 			}
 			
@@ -230,7 +231,6 @@ rate;
 			}
 			$tengah .= '</ul></div>';
 		}
-		
 		
 	
 	}

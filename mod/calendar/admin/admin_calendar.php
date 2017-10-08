@@ -41,7 +41,7 @@ scr;
 	if (isset ($_GET['offset'])) $offset = int_filter ($_GET['offset']); else $offset = 0;
 	
 	function escape ($value){
-		$b = mysql_real_escape_string($value);
+		$b = mysqli_real_escape_string($value);
 		return $b;
 	}
 	
@@ -144,7 +144,7 @@ scr;
 								unset($keterangan);
 								$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=calendar" />';
 							}else{
-								$tengah .= '<div class="error">'.mysql_error().'</div>';
+								$tengah .= '<div class="error">'.mysqli_error().'</div>';
 							}
 						}
 						
@@ -253,7 +253,7 @@ scr;
 					$tengah .= '<div class="success">Agenda Has Been Update</div>';
 					$style_include[] = '<meta http-equiv="refresh" content="0; url='.$referer.'" />';
 				}else{
-					$tengah .= '<div class="error">'.mysql_error().'</div>';								
+					$tengah .= '<div class="error">'.mysqli_error().'</div>';								
 				}
 							
 			}						
@@ -327,7 +327,7 @@ scr;
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 

@@ -44,7 +44,7 @@ js;
 				foreach($_POST['order'] as $key=>$val) {
 						$publish = $_POST['publish'][$key];
 						$position = $_POST['position'][$key];
-						$update = mysql_query("UPDATE `mod_modul` SET `ordering` = '$val',`published` = '$publish',`position` = '$position' WHERE `id` = '$key'");
+						$update = mysqli_query($link, "UPDATE `mod_modul` SET `ordering` = '$val',`published` = '$publish',`position` = '$position' WHERE `id` = '$key'");
 					}
 			}
 		}
@@ -69,8 +69,8 @@ js;
 					</tr>
 				</thead>
 				<tbody>';
-				$query = mysql_query("SELECT * FROM `mod_modul` WHERE `position` = '0' ORDER BY `ordering`");
-				while($data = mysql_fetch_assoc($query)) {
+				$query = mysqli_query($link, "SELECT * FROM `mod_modul` WHERE `position` = '0' ORDER BY `ordering`");
+				while($data = mysqli_fetch_assoc($query)) {
 					$warna = empty ($warna) ? ' style="background-color:#f4f4f8;"' : '';
 					$select = '<select name="publish['.$data['id'].']">';
 					if ($data['published'] == 1) {
@@ -116,8 +116,8 @@ js;
 					</tr>
 				</thead>
 				<tbody>';
-				$query = mysql_query("SELECT * FROM `mod_modul` WHERE `position` = '1' ORDER BY `ordering`");
-				while($data = mysql_fetch_assoc($query)) {
+				$query = mysqli_query($link, "SELECT * FROM `mod_modul` WHERE `position` = '1' ORDER BY `ordering`");
+				while($data = mysqli_fetch_assoc($query)) {
 					$warna = empty ($warna) ? ' style="background-color:#f4f4f8;"' : '';
 					$select = '<select name="publish['.$data['id'].']">';
 					if ($data['published'] == 1) {
@@ -170,15 +170,15 @@ js;
 				$modul 		= $_POST['modul'];
 				$position 	= trim(strip_tags($_POST['position']));
 				$spesial 	= trim(strip_tags($_POST['spesial']));
-				$cek 		= mysql_query("SELECT MAX(`ordering`) + 1 AS `ordering` FROM `mod_modul` WHERE `position` = '$position'");
-				$data 		= mysql_fetch_assoc($cek);
+				$cek 		= mysqli_query($link, "SELECT MAX(`ordering`) + 1 AS `ordering` FROM `mod_modul` WHERE `position` = '$position'");
+				$data 		= mysqli_fetch_assoc($cek);
 				$ordering 	= $data['ordering'];
-				$insert = mysql_query("INSERT INTO `mod_modul` (`modul`,`content`,`position`,`ordering`,`type`,`spesial`) VALUES ('$title','$modul','$position','$ordering','block','$spesial')");
+				$insert = mysqli_query($link, "INSERT INTO `mod_modul` (`modul`,`content`,`position`,`ordering`,`type`,`spesial`) VALUES ('$title','$modul','$position','$ordering','block','$spesial')");
 				if ($insert) {
 					header("location: admin.php?mod=modul");
 					exit;	
 				}else {
-					$tengah .= '<div class="error">'.mysql_error().'</div>';	
+					$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 				}
 			}		
 		}
@@ -231,15 +231,15 @@ js;
 			}else {
 				$spesial 	= trim(strip_tags($_POST['spesial']));
 				$position	 	= trim(strip_tags($_POST['position']));
-				$cek 		= mysql_query("SELECT MAX(`ordering`) + 1 AS `ordering` FROM `mod_modul` WHERE `position` = '$position'");
-				$data 		= mysql_fetch_assoc($cek);
+				$cek 		= mysqli_query($link, "SELECT MAX(`ordering`) + 1 AS `ordering` FROM `mod_modul` WHERE `position` = '$position'");
+				$data 		= mysqli_fetch_assoc($cek);
 				$ordering 	= $data['ordering'];
-				$insert 	= mysql_query("INSERT INTO `mod_modul` (`modul`,`content`,`position`,`ordering`,`type`,`spesial`) VALUES ('$title','$modul','$position','$ordering','module','$spesial')");
+				$insert 	= mysqli_query($Link, "INSERT INTO `mod_modul` (`modul`,`content`,`position`,`ordering`,`type`,`spesial`) VALUES ('$title','$modul','$position','$ordering','module','$spesial')");
 				if ($insert) {
 				header("location: admin.php?mod=modul");
 						exit;	
 				}else {
-					$tengah .= '<div class="error">'.mysql_error().'</div>';	
+					$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 				}
 			}		
 		}
@@ -280,12 +280,12 @@ js;
 	
 	if($_GET['action'] == 'delete'){
 		$id = int_filter($_GET['id']);
-		$delete = mysql_query("DELETE FROM `mod_modul` WHERE `id` = '$id'");
+		$delete = mysqli_query($link, "DELETE FROM `mod_modul` WHERE `id` = '$id'");
 		if ($delete) {
 			header("location: admin.php?mod=modul");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	
@@ -305,24 +305,24 @@ js;
 				$tengah .= '<div class="error">'.$error.'</div>';
 			}else {
 		
-				$cek = mysql_num_rows(mysql_query("SELECT `type` FROM `mod_modul` WHERE `id` = '$id' AND `type` = 'module'"));
+				$cek = mysqli_num_rows(mysqli_query($link, "SELECT `type` FROM `mod_modul` WHERE `id` = '$id' AND `type` = 'module'"));
 				if ($cek) {
 					$modul 	= text_filter($_POST['modul']);
 				}else {
 					$modul 		= $_POST['modul'];
 				}
-				$update = mysql_query("UPDATE `mod_modul` SET `modul` = '$title',`content` = '$modul',`spesial`='$spesial' WHERE `id` = '$id'");
+				$update = mysqli_query($link, "UPDATE `mod_modul` SET `modul` = '$title',`content` = '$modul',`spesial`='$spesial' WHERE `id` = '$id'");
 				if ($update) {
 					header("location: admin.php?mod=modul");
 					exit;
 				}else {
-					$tengah .= '<div class="error">'.mysql_error().'</div>';
+					$tengah .= '<div class="error">'.mysqli_error().'</div>';
 				}
 			}
 		}
 		
-		$query 	= mysql_query("SELECT * FROM `mod_modul` WHERE `id` = '$id'");
-		$data 	= mysql_fetch_assoc($query);
+		$query 	= mysqli_query($link, "SELECT * FROM `mod_modul` WHERE `id` = '$id'");
+		$data 	= mysqli_fetch_assoc($query);
 
 		$_POST['spesial'] = $data['spesial'];
 		$title	 = $data['modul'];

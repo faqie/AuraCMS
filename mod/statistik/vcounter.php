@@ -8,7 +8,7 @@
 	
 	global $db,$url,$kecamatan_id,$all_visitors;
 	include 'mod/statistik/counter.php';
-
+	include WEBROOT_DIR . 'includes/connection.php';
 	class usersOnline {
 
 		var $timeout = 600;
@@ -25,24 +25,25 @@
 		}
 		
 		function ipCheck() {
+	include WEBROOT_DIR . 'includes/connection.php';
 
 			if (getenv('HTTP_CLIENT_IP')) {
-				$ip = mysql_real_escape_string(getenv('HTTP_CLIENT_IP'));
+				$ip = mysqli_real_escape_string($link,getenv('HTTP_CLIENT_IP'));
 			}
 			elseif (getenv('HTTP_X_FORWARDED_FOR')) {
-				$ip = mysql_real_escape_string(getenv('HTTP_X_FORWARDED_FOR'));
+				$ip = mysqli_real_escape_string($link,getenv('HTTP_X_FORWARDED_FOR'));
 			}
 			elseif (getenv('HTTP_X_FORWARDED')) {
-				$ip = mysql_real_escape_string(getenv('HTTP_X_FORWARDED'));
+				$ip = mysqli_real_escape_string($link,getenv('HTTP_X_FORWARDED'));
 			}
 			elseif (getenv('HTTP_FORWARDED_FOR')) {
-				$ip = mysql_real_escape_string(getenv('HTTP_FORWARDED_FOR'));
+				$ip = mysqli_real_escape_string($link,getenv('HTTP_FORWARDED_FOR'));
 			}
 			elseif (getenv('HTTP_FORWARDED')) {
-				$ip = mysql_real_escape_string(getenv('HTTP_FORWARDED'));
+				$ip = mysqli_real_escape_string($link,getenv('HTTP_FORWARDED'));
 			}
 			else {
-				$ip = mysql_real_escape_string($_SERVER['REMOTE_ADDR']);
+				$ip = mysqli_real_escape_string($link, $_SERVER['REMOTE_ADDR']);
 			}
 			return $ip;
 		}
@@ -120,11 +121,11 @@
 
 	$yesterdaystart	 =	$daystart - (24*60*60);
 	$now			 =	time();
-	$ip				 =	mysql_real_escape_string(getIP());
+	$ip				 =	mysqli_real_escape_string($link, getIP());
 	
 
-	$r	= mysql_query("SELECT MAX( id ) AS total FROM `mod_visitcounter`");
-	list($total) = mysql_fetch_array($r);
+	$r	= mysqli_query($link, "SELECT MAX( id ) AS total FROM `mod_visitcounter`");
+	list($total) = mysqli_fetch_array($r);
 
 	if ($total !== NULL) {
 		$all_visitors += $total;
@@ -140,12 +141,12 @@
 		//$query		 =  mysql_query ("DELETE FROM `mod_visitcounter` WHERE `id`<'$temp'");
 	}
 	
-	$item	=	mysql_fetch_assoc(mysql_query ("SELECT COUNT(*) AS `total` FROM `mod_visitcounter` WHERE `ip`='$ip' AND (tm+'$locktime')>'$now'"));
+	$item	=	mysqli_fetch_assoc(mysqli_query ($link, "SELECT COUNT(*) AS `total` FROM `mod_visitcounter` WHERE `ip`='$ip' AND (tm+'$locktime')>'$now'"));
 	$items	=	$item['total'];
 	
 	if (empty($items))
 	{
-		mysql_query ("INSERT INTO `mod_visitcounter` (`id`, `tm`, `ip`) VALUES ('', '$now', '$ip')");
+		mysqli_query($link, "INSERT INTO `mod_visitcounter` (`id`, `tm`, `ip`) VALUES ('', '$now', '$ip')");
 	}
 	
 	$n				 = 	$all_visitors;
@@ -154,16 +155,16 @@
 		$div *= 10;
 	}
 
-	$query1			 =	mysql_fetch_assoc(mysql_query ("SELECT COUNT(*) AS `total_today` FROM `mod_visitcounter` WHERE `tm`>'$daystart'"));
+	$query1			 =	mysqli_fetch_assoc(mysqli_query ($link, "SELECT COUNT(*) AS `total_today` FROM `mod_visitcounter` WHERE `tm`>'$daystart'"));
 	$today_visitors	 =	$query1['total_today'];
 	
-	$query2			 	 =	mysql_fetch_assoc(mysql_query ("SELECT COUNT(*) AS `total_yesterday` FROM `mod_visitcounter` WHERE `tm`>'$yesterdaystart' AND `tm`<'$daystart'"));
+	$query2			 	 =	mysqli_fetch_assoc(mysqli_query ($link, "SELECT COUNT(*) AS `total_yesterday` FROM `mod_visitcounter` WHERE `tm`>'$yesterdaystart' AND `tm`<'$daystart'"));
 	$yesterday_visitors	 =	$query2['total_yesterday'];
 		
-	$query3			 =	mysql_fetch_assoc(mysql_query ("SELECT COUNT(*) AS `total_week` FROM `mod_visitcounter` WHERE `tm`>='$weekstart'"));
+	$query3			 =	mysqli_fetch_assoc(mysqli_query ($link, "SELECT COUNT(*) AS `total_week` FROM `mod_visitcounter` WHERE `tm`>='$weekstart'"));
 	$week_visitors	 =	$query3['total_week'];
 
-	$query4			 =	mysql_fetch_assoc(mysql_query ("SELECT COUNT(*) AS `total_month` FROM `mod_visitcounter` WHERE `tm`>='$monthstart'"));
+	$query4			 =	mysqli_fetch_assoc(mysqli_query ($link, "SELECT COUNT(*) AS `total_month` FROM `mod_visitcounter` WHERE `tm`>='$monthstart'"));
 	$month_visitors	 =	$query4['total_month'];
 	
 	echo '<div>';

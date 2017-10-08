@@ -122,7 +122,7 @@ js;
 						$tengah .= '<div class="success">Content Has Been Update</div>';
 						$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=setting" />';
 					}else{
-						$tengah .= '<div class="error">'.mysql_error().'</div>';
+						$tengah .= '<div class="error">'.mysqli_error().'</div>';
 					}
 				}
 
@@ -232,7 +232,7 @@ js;
 						$tengah .= '<div class="success">Content Has Been Update</div>';
 						$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=setting" />';
 					}else{
-						$tengah .= '<div class="error">'.mysql_error().'/div>';
+						$tengah .= '<div class="error">'.mysqli_error().'/div>';
 					}
 				}
 

@@ -17,7 +17,7 @@ js;
 	if (isset ($_GET['offset'])) $offset = int_filter ($_GET['offset']); else $offset = 0;
 	
 	function escape ($value){
-		$b = mysql_real_escape_string($value);
+		$b = mysqli_real_escape_string($value);
 		return $b;
 	}
 	
@@ -229,7 +229,7 @@ js;
 								unset($tags);
 								unlink(tmp . $finame);
 							}else{
-								$tengah .= '<div class="error">'.mysql_error().'</div>';
+								$tengah .= '<div class="error">'.mysqli_error().'</div>';
 								unlink(tmp . $finame);
 								unlink(normal . $finame);
 								unlink(thumb . $finame);
@@ -352,7 +352,7 @@ js;
 								exit;
 								unset($topic);
 							}else{
-								$tengah .= '<div class="error rt" style="margin-bottom:15px;padding-left:50px;">'.mysql_error().'</div>';
+								$tengah .= '<div class="error rt" style="margin-bottom:15px;padding-left:50px;">'.mysqli_error().'</div>';
 							}
 						}
 						
@@ -440,7 +440,7 @@ js;
 								unset($title);
 								unset($content);
 							}else{
-								$tengah .= '<div class="error">'.mysql_error().'</div>';
+								$tengah .= '<div class="error">'.mysqli_error().'</div>';
 							}
 						}
 						
@@ -530,7 +530,7 @@ js;
 						unlink(normal . $gambarlama);
 						$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=content" />';
 					}else{
-						$tengah .= '<div class="error">'.mysql_error().'</div>';
+						$tengah .= '<div class="error">'.mysqli_error().'</div>';
 					}
 				}else{
 					$success = $db->sql_query("UPDATE `mod_content` SET `title`='$title', `content`='$content',`topic_id`='$topic_id',`date`='$date',`tags`='$tags',`caption`='$caption',`headline`='$headline',`published`='1',`seftitle`='$seftitle' WHERE `id`='$id'");
@@ -538,7 +538,7 @@ js;
 						$tengah .= '<div class="success">Content Has Been Update No Images</div>';
 						$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=content" />';						
 					}else{
-						$tengah .= '<div class="error">'.mysql_error().'</div>';
+						$tengah .= '<div class="error">'.mysqli_error().'</div>';
 					}
 				}					
 			}
@@ -642,7 +642,7 @@ js;
 					$tengah .= '<div class="success">Topic Has Been Update</div>';
 					$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=content" />';
 				}else{
-					$tengah .= '<div class="error">'.mysql_error().'</div>';
+					$tengah .= '<div class="error">'.mysqli_error().'</div>';
 				}
 			}
 				
@@ -702,7 +702,7 @@ js;
 					header("location: admin.php?mod=content");
 					exit;
 				}else{
-					$tengah .= '<div class="error">'.mysql_error().'</div>';
+					$tengah .= '<div class="error">'.mysqli_error().'</div>';
 				}
 			}
 			
@@ -757,13 +757,13 @@ js;
 		$images	= $data['image'];
 		unlink(thumb.$images);
 		unlink(normal.$images);
-		$delete = mysql_query("DELETE FROM `mod_content` WHERE `id` = '$id'");
+		$delete = mysqli_query("DELETE FROM `mod_content` WHERE `id` = '$id'");
 		if ($delete) {
 			$referer = $_GET['referer'];
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	
@@ -776,14 +776,14 @@ js;
 			unlink(thumb.$images);
 			unlink(normal.$images);
 		}
-		$delete  = mysql_query("DELETE FROM `mod_topic` WHERE `id` = '$id'");
-		$delete .= mysql_query("DELETE FROM `mod_content` WHERE `topic_id` = '$id'");
+		$delete  = mysqli_query($link, "DELETE FROM `mod_topic` WHERE `id` = '$id'");
+		$delete .= mysqli_query($link, "DELETE FROM `mod_content` WHERE `topic_id` = '$id'");
 		if ($delete) {
 			$referer = $_GET['referer'];
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	

@@ -18,17 +18,17 @@
 		echo '<h2>Gallery Video</h2>';
 		echo '<div class="border rb breadcrumb"><a href="video.html" id="home">Home</a>   &nbsp;&raquo;&nbsp;   Gallery Video</div>';
 	
-		$cq = mysql_query ("SELECT count(`id`) AS `total_files` FROM `mod_video` WHERE `published`='1'");
-		$gd = mysql_fetch_assoc($cq);
+		$cq = mysqli_query ($link, "SELECT count(`id`) AS `total_files` FROM `mod_video` WHERE `published`='1'");
+		$gd = mysqli_fetch_assoc($cq);
 		$jumlah = $gd['total_files'];
 		
 		$limit = 12;
 		
 		$pembagian = new paging_s ($limit,'video','.html');
-		$query = mysql_query ("SELECT * FROM `mod_video` WHERE `published`='1' ORDER BY `id` DESC LIMIT $offset,$limit");
+		$query = mysqli_query ($link, "SELECT * FROM `mod_video` WHERE `published`='1' ORDER BY `id` DESC LIMIT $offset,$limit");
 		echo '<div class="border rb rt"><table border="0" width="100%" class="photogallery" id="photo-g" cellpadding="0" cellspacing="0"><tr>';
 		$a = 1;
-		while ($data = mysql_fetch_array ($query)){
+		while ($data = mysqli_fetch_array ($query)){
 		echo '<td style="vertical-align:top;padding-bottom:2px;"><div class="gallery"><a href="video-'.$data['seftitle'].'.html"><img src="http://i2.ytimg.com/vi/'.$data['code'].'/default.jpg" border="0" alt=""></a></div></td>';
 		if ( $a % 4 == 0 ) {
 		    echo '</tr><tr>';
@@ -49,31 +49,31 @@
 		
 		$seftitle 		= text_filter(cleanText($_GET['seftitle']));
 	
-		$periksa 		= mysql_query ("SELECT * FROM `mod_video` WHERE `seftitle`='$seftitle' AND `published`='1'");
-		$dataperiksa 	= mysql_fetch_array ($periksa);
+		$periksa 		= mysqli_query ($link, "SELECT * FROM `mod_video` WHERE `seftitle`='$seftitle' AND `published`='1'");
+		$dataperiksa 	= mysqli_fetch_array ($periksa);
 		$id 			= $dataperiksa['id'];
 		
 		$GLOBAL['title'] 		= cleanText($dataperiksa['title']);
 		$GLOBAL['description'] 	= limittxt(htmlentities(strip_tags($dataperiksa['description'])),200);
 		$GLOBAL['keywords'] 	= empty($dataperiksa['title']) ? implode(',',explode(' ',htmlentities(strip_tags($dataperiksa['title'])))) : $dataperiksa['title'];
 		
-		$query 		= mysql_query ("SELECT count(`id`) AS `total_files` FROM `mod_video` WHERE `id`!='$id'");
-		$getdata 	= mysql_fetch_assoc($query);
+		$query 		= mysqli_query ($link, "SELECT count(`id`) AS `total_files` FROM `mod_video` WHERE `id`!='$id'");
+		$getdata 	= mysqli_fetch_assoc($query);
 		$jumlah 	= $getdata['total_files'];
 		
-		$qp = mysql_query ("SELECT * FROM `mod_video` WHERE `id`!='$id' AND `id`<'$id' ORDER BY `id` DESC LIMIT 0,1");
-		$qn = mysql_query ("SELECT * FROM `mod_video` WHERE `id`!='$id' AND `id`>'$id' ORDER BY `id` DESC LIMIT 0,1");
-		$dp = mysql_fetch_array ($qp);
-		$dn = mysql_fetch_array ($qn);
+		$qp = mysqli_query ($link, "SELECT * FROM `mod_video` WHERE `id`!='$id' AND `id`<'$id' ORDER BY `id` DESC LIMIT 0,1");
+		$qn = mysqli_query ($link,,"SELECT * FROM `mod_video` WHERE `id`!='$id' AND `id`>'$id' ORDER BY `id` DESC LIMIT 0,1");
+		$dp = mysqli_fetch_array ($qp);
+		$dn = mysqli_fetch_array ($qn);
 		$imgprev	= '';
 		$imgnext	= '';
 		$kprev		= '';
 		$knext		= '';
-		if(mysql_num_rows($qp)>0){
+		if(mysqli_num_rows($qp)>0){
 			$imgprev 	.= '<a href="video-'.$dp['seftitle'].'.html"><img src="http://i2.ytimg.com/vi/'.$dp['code'].'/default.jpg" border="0" alt=""></a>';
 			$kprev		.= '&laquo; Prev';
 		}
-		if(mysql_num_rows($qn)>0){
+		if(mysqli_num_rows($qn)>0){
 			$imgnext	.= '<a href="video-'.$dn['seftitle'].'.html"><img src="http://i2.ytimg.com/vi/'.$dn['code'].'/default.jpg" border="0" alt=""></a>';
 			$knext		.= 'Next &raquo;';
 		}

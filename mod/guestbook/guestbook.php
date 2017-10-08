@@ -77,9 +77,9 @@
 				$tengah .= '<div class="error">'.$error.'</div>';
 				unset($gfx_check);
 			}else{
-				$name 	 = mysql_real_escape_string($_POST['name']);
-				$city 	 = mysql_real_escape_string($_POST['city']);
-				$comment = mysql_real_escape_string($_POST['comment']);
+				$name 	 = mysqli_real_escape_string($_POST['name']);
+				$city 	 = mysqli_real_escape_string($_POST['city']);
+				$comment = mysqli_real_escape_string($_POST['comment']);
 				$insert = $db->sql_query("INSERT INTO `mod_guestbook` (`name`,`email`,`website`,`ip`,`city`,`date`,`comment`) VALUE ('$name','$email','$website','$ip','$city','$date','$comment')");
 				if($insert){
 					$tengah .= '<div class="sukses">Data has been Save</div>';

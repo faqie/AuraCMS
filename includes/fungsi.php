@@ -1,9 +1,11 @@
 <?php
 
+
 if (!defined('FUNCTION')) {
 	Header("Location: index.php");
     exit;
 }
+
 function kotakjudul($title, $content) {
 	global  $themes;
     $thefile = addslashes(file_get_contents("themes/".themes."/boxmenu.html"));
@@ -39,10 +41,11 @@ function kotakspesial($title, $content) {
 
 function modul($posisi){
     global $db,$STYLE_INCLUDE,$script_INCLUDE;
+    include WEBROOT_DIR . '/includes/connection.php';
     		$total = 0;
     		$numb = 0;
     	if (isset($_GET['mod'])) {
-	    	$pilih = mysql_real_escape_string(strip_tags($_GET['mod']));
+	    	$pilih = mysqli_real_escape_string($link, strip_tags($_GET['mod']));
 	    	$numb = $db->sql_numrows($db->sql_query("SELECT `id` FROM `mod_actions` WHERE `modul` = '$pilih'"));
 	    	$modulku = $db->sql_query("SELECT * FROM `mod_actions` LEFT JOIN `mod_modul` ON (`mod_modul`.`id` = `mod_actions`.`modul_id`) WHERE `mod_actions`.`modul` = '$pilih' AND `mod_actions`.`position` = '$posisi' ORDER BY `mod_actions`.`order`");
 	    	//print_r($modulku);
@@ -474,7 +477,7 @@ function aura_login (){
 	$db->sql_freeresult ($query);
 	if ($total > 0 && $username == $data['username'] && $password == $data['password']){
 		$loginter 		= $_SERVER['REMOTE_ADDR'] .'|'. (time ()+ $GLOBALS['timeplus']);
-		$query			= mysql_query ("UPDATE `mod_user` SET `lastlogin`='$loginter' WHERE `username`='$username'");
+		$query			= mysqli_query ($link, "UPDATE `mod_user` SET `lastlogin`='$loginter' WHERE `username`='$username'");
 		$times_login 	= $data['timelogin'];
 		$_SESSION['username']	= $data['username'];
 		$_SESSION['name']		= $data['name'];
@@ -612,7 +615,7 @@ function cek_ip ($check) {
 }
 function getIP(){
 	$banned = array ('127.0.0.1', '192.168', '10');
-	$ip_adr = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+	$ip_adr = getenv('HTTP_X_FORWARDED_FOR');
 	$bool 	= false;
 	foreach ($banned as $key=>$val){
 		if (preg_match('/'.$val.'/', $ip_adr)) {

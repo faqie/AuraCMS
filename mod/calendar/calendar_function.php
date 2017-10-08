@@ -6,7 +6,8 @@
  *	Iwan Susyanto, S.Si - admin@auracms.org      - 081 327 575 145
  */
 	
-
+ include WEBROOT_DIR . '/includes/connection.php';
+ 
   $sel_date = isset($_REQUEST['sel_date']) ? (int)$_REQUEST['sel_date'] : time();
   if( isset($_POST['hrs']) ){
      $t = getdate($sel_date);
@@ -64,8 +65,8 @@
 	$awalbulandengannol = $t['mon'] >= 10 ? $t['mon'] : '0'.$t['mon'];
 	$varwaktucalender = $t['year'] . '-' . $awalbulandengannol;
 		    
-	$cekdate = mysql_query ("SELECT * FROM `tbl_kalender` WHERE left( `waktu_mulai` , 7 ) = '$varwaktucalender'");
-    while ($getdate = mysql_fetch_assoc($cekdate)){
+	$cekdate = mysqli_query ($link, "SELECT * FROM `tbl_kalender` WHERE left( `waktu_mulai` , 7 ) = '$varwaktucalender'");
+    while ($getdate = mysqli_fetch_assoc($cekdate)){
 	    
 	    $warna 		= empty ($warna) ? '#F0F6F9': '';
 	    $WKTMULAI 	= $getdate['waktu_mulai'];

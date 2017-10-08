@@ -149,7 +149,7 @@ js;
 							$tengah .= '<div class="error">'.$error.'</div>';
 						}else{	
 								
-							$content = mysql_real_escape_string($_POST['content']);
+							$content = mysqli_real_escape_string($_POST['content']);
 							$success = $db->sql_query("INSERT INTO `mod_video` (`title`,`description`,`code`,`date`,`published`,`seftitle`) VALUES ('$title','$content','$code','$date','1','$seftitle')");
 							if($success){
 								$tengah .= '<div class="success">Video Has Been Added in Database</div>';
@@ -158,7 +158,7 @@ js;
 								unset($code);
 								$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=video" />';
 							}else{
-								$tengah .= '<div class="error">'.mysql_error().'</div>';
+								$tengah .= '<div class="error">'.mysqli_error().'</div>';
 							}
 						}
 						
@@ -231,13 +231,13 @@ js;
 					$tengah .= '<div class="error">'.$error.'</div>';
 				}else{	
 					
-					$content 	= mysql_real_escape_string($_POST['content']);
+					$content 	= mysqli_real_escape_string($_POST['content']);
 					$success 	= $db->sql_query("UPDATE `mod_video` SET `title`='$title',`description`='$content',`code`='$code',`date`='$date',`seftitle`='$seftitle' WHERE `id`='$id'");
 					if($success){
 						$tengah .= '<div class="success">Video Has Been Update</div>';
 						$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=video" />';						
 					}else{
-						$tengah .= '<div class="error">'.mysql_error().'</div>';
+						$tengah .= '<div class="error">'.mysqli_error().'</div>';
 					}					
 				}						
 			}
@@ -277,12 +277,12 @@ js;
 	
 	if($_GET['action'] == 'delete'){
 		$id 		= int_filter($_GET['id']);
-		$delete = mysql_query("DELETE FROM `mod_video` WHERE `id` = '$id'");
+		$delete = mysqli_query($link, "DELETE FROM `mod_video` WHERE `id` = '$id'");
 		if ($delete) {
 			header("location: admin.php?mod=video");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	

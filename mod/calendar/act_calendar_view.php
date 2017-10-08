@@ -32,8 +32,8 @@ if (isset ($_GET['sel_date']) OR isset ($_GET['id']) OR isset ($_GET['seftitle']
 	  
 	
 	   
-	$cekdate = mysql_query ("SELECT * FROM `tbl_kalender` WHERE `waktu_mulai` = '$varwaktucalender' OR `waktu_akhir` = '$varwaktucalender2' OR `id`='$id' OR `seftitle`='$seftitle' ORDER BY `waktu_mulai`");
-	$getdate = mysql_fetch_assoc($cekdate);
+	$cekdate = mysqli_query ($link, "SELECT * FROM `tbl_kalender` WHERE `waktu_mulai` = '$varwaktucalender' OR `waktu_akhir` = '$varwaktucalender2' OR `id`='$id' OR `seftitle`='$seftitle' ORDER BY `waktu_mulai`");
+	$getdate = mysqli_fetch_assoc($cekdate);
 		//print_r($getdate);
 		$WKTMULAI = $getdate['waktu_mulai'];
 		$WKTAKHIR = $getdate['waktu_akhir'];

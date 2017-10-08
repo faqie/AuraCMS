@@ -1,25 +1,24 @@
 <?php
 
 function rating_bar($id,$units='',$static='') { 
+include '_config-rating.php';
+include './includes/connection.php';
 
-include '_config-rating.php';	
 //set some variables
 $ip = $_SERVER['REMOTE_ADDR'];
 if (!$units) {$units = 10;}
 if (!$static) {$static = FALSE;}
 
 // get votes, values, ips for the current rating bar
-$query=mysql_query("SELECT total_votes, total_value, used_ips FROM $rating_tableName WHERE id='$id' ")or die(" Error: ".mysql_error());
-
+$query=mysqli_query($link, "SELECT total_votes, total_value, used_ips FROM $rating_tableName WHERE id='$id' ")or die(" Error: ".mysqli_error($link));
 
 // insert the id in the DB if it doesn't exist already
 // see: http://www.masugadesign.com/the-lab/scripts/unobtrusive-ajax-star-rating-bar/#comment-121
-if (mysql_num_rows($query) == 0) {
+if (mysqli_num_rows($query) == 0) {
 $sql = "INSERT INTO $rating_tableName (`id`,`total_votes`, `total_value`, `used_ips`) VALUES ('$id', '0', '0', '')";
-$result = mysql_query($sql);
+$result = mysqli_query($link, $sql);
 }
-
-$numbers=mysql_fetch_assoc($query);
+$numbers=mysqli_fetch_assoc($query);
 
 
 if ($numbers['total_votes'] < 1) {
@@ -31,13 +30,20 @@ $current_rating=$numbers['total_value']; //total number of rating added together
 $tense=($count==1) ? "vote" : "votes"; //plural form votes/vote
 
 // determine whether the user has voted, so we know how to draw the ul/li
-$voted=mysql_num_rows(mysql_query("SELECT used_ips FROM $rating_tableName WHERE used_ips LIKE '%".$ip."%' AND id='".$id."' ")); 
+$voted=mysqli_num_rows(mysqli_query($link, "SELECT used_ips FROM $rating_tableName WHERE used_ips LIKE '%".$ip."%' AND id='".$id."' ")); 
 
 // now draw the rating bar
+if($count > 0 ){
+
 $rating_width = @number_format($current_rating/$count,2)*$rating_unitwidth;
 $rating1 = @number_format($current_rating/$count,1);
 $rating2 = @number_format($current_rating/$count,2);
 
+} else {
+$rating_width = @number_format($current_rating/1,2)*$rating_unitwidth;
+$rating1 = @number_format($current_rating/1,1);
+$rating2 = @number_format($current_rating/1,2);
+}
 
 if ($static == 'static') {
 
@@ -77,6 +83,8 @@ if ($static == 'static') {
       $rater.='  </span>';
       $rater.='</div>';
       return $rater;
- }
+
+       }
 }
+
 ?>

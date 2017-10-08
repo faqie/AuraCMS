@@ -225,7 +225,7 @@ js;
 					$tengah .= '<div class="success">Menu berhasil di Edit</div>';					
 					$style_include[] ='<meta http-equiv="refresh" content="0; url='.$referer.'" />';
 				}else{
-					$tengah .= '<div class="success">'.mysql_error().'</div>';
+					$tengah .= '<div class="success">'.mysqli_error().'</div>';
 				}			
 			}
 		}
@@ -294,13 +294,13 @@ js;
 	
 	if($_GET['action'] == 'delete'){
 		$id 		= int_filter($_GET['id']);
-		$delete = mysql_query("DELETE FROM `mod_menu` WHERE `id` = '$id'");
+		$delete = mysqli_query($link, "DELETE FROM `mod_menu` WHERE `id` = '$id'");
 		if ($delete) {
 			$referer = $_GET['referer'];
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	

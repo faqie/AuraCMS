@@ -95,8 +95,8 @@
 					}
 				
 					$ref   = urlencode($_SERVER['REQUEST_URI']);
-					$query = mysql_query("SELECT * FROM `mod_user` $QUERY ORDER BY `name` ASC LIMIT $offset,$limit");
-					while($data = mysql_fetch_assoc($query)) {
+					$query = mysqli_query($link, "SELECT * FROM `mod_user` $QUERY ORDER BY `name` ASC LIMIT $offset,$limit");
+					while($data = mysqli_fetch_assoc($query)) {
 						$warna 	= empty ($warna) ? ' style="background-color:#f4f4f8;"' : '';
 						$status = ($data['active'] == 1) ? '<a class="enable" href="?mod=users&amp;action=pub&amp;pub=no&amp;id='.$data['id'].'&amp;referer='.$ref.'" title="Enable">Enable</a>' : '<a class="disable" href="?mod=users&amp;action=pub&amp;pub=yes&amp;id='.$data['id'].'&amp;referer='.$ref.'" title="Disable">Disable</a>';												
 						$tengah .= '<tr'.$warna.'><td class="center">'.$no.'</td><td class="left">'.$data['name'].'</td><td style="text-align: center;">'.$data['email'].'</td><td style="text-align: center;">'.$data['level'].'</td><td style="text-align: center;">'.$status.'</td><td style="text-align:center;"><a class="edit" href="admin.php?mod=users&amp;action=edit&amp;id='.$data['id'].'&amp;referer='.$ref.'">Edit</a> <a class="delete" href="admin.php?mod=users&amp;action=delete&amp;id='.$data['id'].'&amp;referer='.$ref.'" onclick="return confirm(\'Apakah anda yakin ?\')">Delete</a></td></tr>';
@@ -137,7 +137,7 @@
 							header("location: admin.php?mod=users");
 							exit;
 						}else{
-							$tengah .= '<div class="error">'.mysql_error().'</div>';
+							$tengah .= '<div class="error">'.mysqli_error().'</div>';
 						}					
 					}
 					
@@ -223,7 +223,7 @@
 					header("location: $referer");
 					exit;
 				}else{
-					$tengah .= '<div class="error">'.mysql_error().'</div>';
+					$tengah .= '<div class="error">'.mysqli_error().'</div>';
 				}					
 			}
 					
@@ -289,12 +289,12 @@
 		if($id == 1){
 			header("location: $referer");
 		}
-		$delete = mysql_query("DELETE FROM `mod_user` WHERE `id` = '$id' AND `id`!='1'");
+		$delete = mysqli_query($link, "DELETE FROM `mod_user` WHERE `id` = '$id' AND `id`!='1'");
 		if ($delete) {
 			header("location: $referer");
 			exit;	
 		}else {
-			$tengah .= '<div class="error">'.mysql_error().'</div>';	
+			$tengah .= '<div class="error">'.mysqli_error().'</div>';	
 		}
 	}
 	

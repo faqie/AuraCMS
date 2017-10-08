@@ -4,10 +4,10 @@
 header("Cache-Control: no-cache");
 header("Pragma: nocache");
 
-include '../../includes/connection.php';
-include '../../includes/mysql.php';
-include '../../includes/global.php';
-include '../../includes/fungsi.php';
+include WEBROOT_DIR . 'includes/connection.php';
+include WEBROOT_DIR . 'includes/mysql.php';
+include WEBROOT_DIR . 'includes/global.php';
+include WEBROOT_DIR . 'includes/fungsi.php';
 include '_config-rating.php';
 
 
@@ -22,14 +22,13 @@ if ($vote_sent > $units) die("Sorry, vote appears to be invalid."); // kill the 
 
 
 //connecting to the database to get some information
-$query = mysql_query("SELECT total_votes, total_value, used_ips FROM $mysql_database.$rating_tableName WHERE id='$id_sent' ")or die(" Error: ".mysql_error());
-$numbers = mysql_fetch_assoc($query);
+$query = mysqli_query($link, "SELECT total_votes, total_value, used_ips FROM $mysql_database.$rating_tableName WHERE id='$id_sent' ")or die(" Error: ".mysqli_error());
+$numbers = mysqli_fetch_assoc($query);
 $checkIP = unserialize($numbers['used_ips']);
 $count = $numbers['total_votes']; //how many votes total
 $current_rating = $numbers['total_value']; //total number of rating added together and stored
 $sum = $vote_sent+$current_rating; // add together the current vote value and the total vote value
 $tense = ($count==1) ? "vote" : "votes"; //plural form votes/vote
-
 // checking to see if the first vote has been tallied
 // or increment the current number of votes
 ($sum==0 ? $added=0 : $added=$count+1);
@@ -39,17 +38,17 @@ $tense = ($count==1) ? "vote" : "votes"; //plural form votes/vote
 $insertip=serialize($checkIP);
 
 //IP check when voting
-$voted=mysql_num_rows(mysql_query("SELECT used_ips FROM $mysql_database.$rating_tableName WHERE used_ips LIKE '%".$ip."%' AND id='".$id_sent."' "));
+$voted=mysqli_num_rows(mysqli_query($link, "SELECT used_ips FROM $mysql_database.$rating_tableName WHERE used_ips LIKE '%".$ip."%' AND id='".$id_sent."' "));
 if(!$voted) {     //if the user hasn't yet voted, then vote normally...
 
 	if (($vote_sent >= 1 && $vote_sent <= $units) && ($ip == $ip_num)) { // keep votes within range, make sure IP matches - no monkey business!
 		$update = "UPDATE $mysql_database.$rating_tableName SET total_votes='".$added."', total_value='".$sum."', used_ips='".$insertip."' WHERE id='$id_sent'";
-		$result = mysql_query($update);		
+		$result = mysqli_query($link, $update);		
 	} 
 } //end for the "if(!$voted)"
 // these are new queries to get the new values!
-$newtotals = mysql_query("SELECT total_votes, total_value, used_ips FROM $mysql_database.$rating_tableName WHERE id='$id_sent' ")or die(" Error: ".mysql_error());
-$numbers = mysql_fetch_assoc($newtotals);
+$newtotals = mysqli_query($link, "SELECT total_votes, total_value, used_ips FROM $mysql_database.$rating_tableName WHERE id='$id_sent' ")or die(" Error: ".mysqli_error());
+$numbers = mysqli_fetch_assoc($newtotals);
 $count = $numbers['total_votes'];//how many votes total
 $current_rating = $numbers['total_value'];//total number of rating added together and stored
 $tense = ($count==1) ? "vote" : "votes"; //plural form votes/vote

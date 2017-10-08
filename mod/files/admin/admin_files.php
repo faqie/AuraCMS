@@ -18,7 +18,7 @@ js;
 	if (isset ($_GET['offset'])) $offset = int_filter ($_GET['offset']); else $offset = 0;
 	
 	function escape ($value){
-		$b = mysql_real_escape_string($value);
+		$b = mysqli_real_escape_string($value);
 		return $b;
 	}
 	

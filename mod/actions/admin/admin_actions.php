@@ -93,7 +93,7 @@
 									
 					$ref   = urlencode($_SERVER['REQUEST_URI']);
 					$query = $db->sql_query("SELECT * FROM `mod_actions` GROUP BY `modul`");
-					while($data = mysql_fetch_assoc($query)) {
+					while($data = mysqli_fetch_assoc($query)) {
 						$warna 	 = empty ($warna) ? ' style="background-color:#f4f4f8;"' : '';
 						$tengah .= '
 						<tr'.$warna.'>
@@ -136,7 +136,7 @@
 							unset($modul_id);
 							$style_include[] = '<meta http-equiv="refresh" content="0; url=admin.php?mod=actions" />';
 						}else{
-							$tengah .= '<div class="error">'.mysql_error().'</div>';
+							$tengah .= '<div class="error">'.mysqli_error().'</div>';
 						}					
 					}
 					
@@ -180,7 +180,7 @@
 	
 	if($_GET['action'] =='view'){
 	
-		$modul = mysql_real_escape_string(strip_tags($_GET['modul']));
+		$modul = mysqli_real_escape_string(strip_tags($_GET['modul']));
 
 		if (isset($_GET['delete'])) {
 			$id = intval($_GET['id']);
@@ -225,7 +225,7 @@
 			$ref   = urlencode($_SERVER['REQUEST_URI']);
 			$query = $db->sql_query("SELECT `mod_actions`.*,`mod_modul`.`modul` FROM `mod_actions` LEFT JOIN `mod_modul` ON (`mod_modul`.`id` = `mod_actions`.`modul_id`) WHERE `mod_actions`.`modul` = '$modul' AND `mod_actions`.`position` = '0' ORDER BY `mod_actions`.`order`");
 
-			while($data = mysql_fetch_assoc($query)) {
+			while($data = mysqli_fetch_assoc($query)) {
 				$warna 	 = empty ($warna) ? ' style="background-color:#f4f4f8;"' : '';
 				$position= $data['position'];
 				$pos	 = 'position['.$data['id'].']';
@@ -261,7 +261,7 @@
 			$ref   = urlencode($_SERVER['REQUEST_URI']);
 			$query = $db->sql_query("SELECT `mod_actions`.*,`mod_modul`.`modul` FROM `mod_actions` LEFT JOIN `mod_modul` ON (`mod_modul`.`id` = `mod_actions`.`modul_id`) WHERE `mod_actions`.`modul` = '$modul' AND `mod_actions`.`position` = '1' ORDER BY `mod_actions`.`order`");
 
-			while($data = mysql_fetch_assoc($query)) {
+			while($data = mysqli_fetch_assoc($query)) {
 				$warna 	 = empty ($warna) ? ' style="background-color:#f4f4f8;"' : '';
 				$position= $data['position'];
 				$pos	 = 'position['.$data['id'].']';
