@@ -11,9 +11,9 @@
 	}
 
 	if(DS == '/'){
-		define('WEBROOT_DIR',dirname(__FILE__).'/');
+		define('WEBROOT_DIR',__DIR__.'/');
 	}else{
-		define('WEBROOT_DIR',str_replace('\\', '/', dirname(__FILE__)).'/');
+		define('WEBROOT_DIR',str_replace('\\', '/', __DIR__).'/');
 	}
 	if (!defined('INC')) {
 		define('INC', WEBROOT_DIR . 'includes/');
@@ -38,7 +38,6 @@
 		require_once ('installer/install.php');
 		die();
 	}else{	
-	
 		include INC . 'connection.php';
 		include INC . 'mysql.php';
 		include INC . 'global.php';
@@ -47,14 +46,11 @@
 		include INC . 'template.php';
 		include INC . 'admin.lib.php';
 		include INC . 'json.php';
-	
 	}
-	
 	
 	if (!defined('THEMES')) {
 		define('THEMES', WEBROOT_DIR . 'themes/'.get_setting('themes').'/');
 	}
-	
 	$timer = new microTimer;
 	$timer->start();
 	
@@ -64,10 +60,7 @@
 	if (isset ($_GET['pg'])) $pg = int_filter ($_GET['pg']); else $pg = NULL;
 	if (isset ($_GET['stg'])) $stg = int_filter ($_GET['stg']); else $stg = NULL;
 	if (isset ($_GET['offset'])) $offset = int_filter ($_GET['offset']); else $offset = NULL;
-	
 	ob_start();
-		
-	
 	if (!isset($_GET['mod'])) {
 		include THEMES . 'normal.php';
 	} else if (isset($_GET['mod']) && !empty($_GET['mod']) && !preg_match("/\.\./",$_GET['mod']) && file_exists(MOD . '/'.$_GET['mod'].'/'.$_GET['mod'].'.php')){
@@ -78,8 +71,8 @@
 	}
 	
 	$content = ob_get_contents();
-	ob_end_clean();
-	
+	ob_end_clean(); 
+
 	ob_start();
 	if(isset($_SESSION['level']) AND $_SESSION['level']!='administrator'){
 		echo '<h1 class="bg2 rt">Member Menu</h1>';
@@ -138,5 +131,4 @@
 	}
 	$tpl-> define_tag($define);
 	$tpl-> cetak();
-	
 ?>
